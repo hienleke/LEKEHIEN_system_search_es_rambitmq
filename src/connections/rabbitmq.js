@@ -74,7 +74,7 @@ async function consumeQueue(queue, options, handler) {
             if (msg !== null) {
                 try {
                     if (Math.random() < 0.5) {
-                        throw new Error('error here');
+                        throw new Error('Fake error for testing here');
                     }
                     await handler(msg.content.toString());
                     channel.ack(msg);
