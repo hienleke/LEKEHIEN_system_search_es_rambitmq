@@ -18,9 +18,8 @@ const { Queue, Exchange } = require('../../types/type');
 async function handleNotification(message) {
     try {
         const { query, results } = JSON.parse(message);
-        console.log(`[NotificationWorker] User searched for:`, query);
-        console.log(`[NotificationWorker] Results:`, results);
-        // Add notification logic here (e.g., send email, push notification, etc.)
+        console.log(`[NotificationWorker] User searched successfully`, query);
+        // Add notification logic here (e.g., send email, push notification , analyze something, etc.)
     } catch (err) {
         console.error('[NotificationWorker] Failed to process message:', err, 'Raw:', message);
     }
@@ -41,7 +40,3 @@ async function main() {
 if (require.main === module) {
     main();
 }
-
-// To run this worker:
-// node src/events/workers/notificationWorker.js
-// or set NOTIFICATION_QUEUE env variable 
