@@ -1,4 +1,4 @@
-# Pollen Tech Backend Engineer Challenge: Product Search System
+# Product Search System
 
 ## Objective
 Design a backend architecture for the Product Search functionality of an e-commerce platform, focusing on fast, relevant results and asynchronous insights for the sales team.
