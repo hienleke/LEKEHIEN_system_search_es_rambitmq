@@ -128,7 +128,7 @@ GET /products/search?query={search_term}
 ## Project Structure
 ```
 src/
-├── connections/           # Database connections
+├── connections/           # ES, Rabbit connections
 ├── controllers/           # Request handlers
 ├── events/workers/        # Background workers
 ├── routes/               # Express routes
