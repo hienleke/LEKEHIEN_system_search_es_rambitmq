@@ -1,0 +1,70 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    container_name: pollen_app
+    command: ["npm", "run", "start"]
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200
+      - ELASTICSEARCH_INDEX=products
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - RABBITMQ_QUEUE=queue_search
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=changeme
+      - CLUSTER_WORKERS=2
+    depends_on:
+      - rabbitmq
+      - elasticsearch
+    volumes:
+      - .:/usr/src/app
+    restart: unless-stopped
+
+  notification-worker:
+    build: .
+    container_name: pollen_notification_worker
+    command: ["npm", "run", "worker"]
+    environment:
+      - ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200
+      - ELASTICSEARCH_INDEX=products
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - RABBITMQ_QUEUE=queue_search
+      - NOTIFICATION_QUEUE=queue_search
+    depends_on:
+      - rabbitmq
+      - elasticsearch
+    volumes:
+      - .:/usr/src/app
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    restart: unless-stopped
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.0.3
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=changeme
+      - xpack.security.enabled=true
+      - xpack.security.authc.api_key.enabled=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    restart: unless-stopped
+
+volumes:
+  esdata: 
