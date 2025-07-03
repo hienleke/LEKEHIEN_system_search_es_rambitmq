@@ -80,7 +80,7 @@ cp example.env .env
 ### 2. Run with Docker Compose
 ```sh
 docker-compose up -d 
-# IMPORTANT: Wait at least 4 minutes for Elasticsearch to fully start before initializing data!
+# IMPORTANT: Wait at least 4 minutes for Elasticsearch to fully start before initializing data and sometime check worker container and app container cause will may be got error because rambitmq and elasticsearch take more time to get a connectikn from two of those container so need to restart one or both of those container!
 ```
 
 ### 3. Initialize Elasticsearch Data
